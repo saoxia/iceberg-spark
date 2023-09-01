@@ -31,6 +31,7 @@ RUN apt-get update && \
 
 # Install Jupyter and other python deps
 COPY requirements.txt .
+RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 # Add scala kernel via spylon-kernel
@@ -124,6 +125,19 @@ RUN chmod u+x /opt/spark/sbin/* && \
 COPY .pyiceberg.yaml /root/.pyiceberg.yaml
 
 COPY entrypoint.sh .
+# 支持clickshoue
+COPY patch/database.py /usr/local/lib/python3.9/site-packages/infi/clickhouse_orm/database.py
+COPY patch/connector.py /usr/local/lib/python3.9/site-packages/sqlalchemy_clickhouse/connector.py
+# 支持airflow
+ENV AIRFLOW_HOME=/home/airflow
+RUN pip3 install apache-airflow==2.7.0 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.0/constraints-3.9.txt"
+RUN pip3 install apache-airflow-providers-apache-spark
+RUN pip3 install apache-airflow
+RUN pip3 uninstall -y sqlalchemy
+RUN pip3 install sqlalchemy==1.4.27
+# 赋予权限
+RUN chmod -R 777 .
+RUN rm -rf /usr/local/lib/python3.9/site-packages/airflow/example_dags/*
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["notebook"]
