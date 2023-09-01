@@ -16,36 +16,42 @@
 # under the License.
 ---
 version: "3"
-
+networks:
+  iceberg_net:
 services:
   spark-iceberg:
-    image: tabulario/spark-iceberg
-    container_name: spark-iceberg
-    build: spark/
+    image: digitwise/iceberg-spark
+    container_name: iceberg-spark
     networks:
       iceberg_net:
     depends_on:
       - rest
       - minio
     volumes:
-      - ./warehouse:/home/iceberg/warehouse
-      - ./notebooks:/home/iceberg/notebooks/notebooks
+      - ./notebooks:/home/iceberg/notebooks
+      - ./airflow:/home/airflow
+      - ./spark/spark-defaults.conf:/opt/spark/conf/spark-defaults.conf
     environment:
       - AWS_ACCESS_KEY_ID=admin
       - AWS_SECRET_ACCESS_KEY=password
       - AWS_REGION=us-east-1
+      - TZ=Asia/Shanghai
     ports:
+      - 7077:7077
       - 8888:8888
       - 8080:8080
       - 10000:10000
       - 10001:10001
+      - 38080:38080
   rest:
-    image: tabulario/iceberg-rest
+    image: digitwise/iceberg-rest
     container_name: iceberg-rest
     networks:
       iceberg_net:
     ports:
       - 8181:8181
+    volumes:
+      - ./iceberg-rest:/app
     environment:
       - AWS_ACCESS_KEY_ID=admin
       - AWS_SECRET_ACCESS_KEY=password
@@ -67,6 +73,8 @@ services:
     ports:
       - 9001:9001
       - 9000:9000
+    volumes:
+      - ./minio/data:/data
     command: ["server", "/data", "--console-address", ":9001"]
   mc:
     depends_on:
@@ -87,5 +95,4 @@ services:
       /usr/bin/mc policy set public minio/warehouse;
       tail -f /dev/null
       "
-networks:
-  iceberg_net:
+
