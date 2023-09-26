@@ -9,7 +9,7 @@ pulsar-client[all]==3.1.0
 func_timeout==4.3.5
 tenacity==8.2.2
 infi.clickhouse-orm==2.1.3
-SQLAlchemy==1.4.27
+SQLAlchemy==1.4.36
 sqlalchemy-clickhouse==0.1.5.post0
 pymysql
 pymssql
