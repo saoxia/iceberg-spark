@@ -130,7 +130,7 @@ COPY patch/database.py /usr/local/lib/python3.9/site-packages/infi/clickhouse_or
 COPY patch/connector.py /usr/local/lib/python3.9/site-packages/sqlalchemy_clickhouse/connector.py
 # 支持airflow
 ENV AIRFLOW_HOME=/home/airflow
-RUN pip3 install apache-airflow==2.7.1 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.0/constraints-3.9.txt"
+RUN pip3 install apache-airflow==2.7.1 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.1/constraints-3.9.txt"
 RUN pip3 install apache-airflow-providers-apache-spark
 RUN pip3 install apache-airflow
 RUN pip3 uninstall -y sqlalchemy
