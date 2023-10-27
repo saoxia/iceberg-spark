@@ -49,8 +49,8 @@ ENV PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9.7-src.zip:$
 
 WORKDIR ${SPARK_HOME}
 
-ENV SPARK_VERSION=3.4.1
-ENV SPARK_MAJOR_VERSION=3.4
+ENV SPARK_VERSION=3.5.0
+ENV SPARK_MAJOR_VERSION=3.5
 ENV ICEBERG_VERSION=1.4.1
 
 # Download spark
@@ -60,7 +60,7 @@ RUN mkdir -p ${SPARK_HOME} \
  && rm -rf spark-${SPARK_VERSION}-bin-hadoop3.tgz
 
 # Download iceberg spark runtime
-RUN curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar -Lo /opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.13/${ICEBERG_VERSION}/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.13-${ICEBERG_VERSION}.jar -Lo /opt/spark/jars/iceberg-spark-runtime-${SPARK_MAJOR_VERSION}_2.12-${ICEBERG_VERSION}.jar
 
 # Download AWS bundle
 RUN curl -s https://repo1.maven.org/maven2/org/apache/iceberg/iceberg-aws-bundle/${ICEBERG_VERSION}/iceberg-aws-bundle-${ICEBERG_VERSION}.jar -Lo /opt/spark/jars/iceberg-aws-bundle-${ICEBERG_VERSION}.jar
@@ -126,7 +126,7 @@ COPY patch/database.py /usr/local/lib/python3.9/site-packages/infi/clickhouse_or
 COPY patch/connector.py /usr/local/lib/python3.9/site-packages/sqlalchemy_clickhouse/connector.py
 # 支持airflow
 ENV AIRFLOW_HOME=/home/airflow
-RUN pip3 install apache-airflow==2.7.1 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.1/constraints-3.9.txt"
+RUN pip3 install apache-airflow==2.7.2 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.9.txt"
 RUN pip3 install apache-airflow-providers-apache-spark
 RUN pip3 install apache-airflow
 RUN pip3 uninstall -y sqlalchemy
