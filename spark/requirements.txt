@@ -5,3 +5,11 @@ jupysql==0.10.5
 matplotlib==3.9.2
 scipy==1.14.0
 duckdb-engine==0.13.1
+pulsar-client[all]==3.5.0 
+func_timeout
+tenacity
+pymysql
+minio
+openpyxl
+clickhouse-connect
+pandas

@@ -127,5 +127,14 @@ COPY .pyiceberg.yaml /root/.pyiceberg.yaml
 
 COPY entrypoint.sh .
 
+ENV AIRFLOW_HOME=/home/airflow 
+RUN pip3 install apache-airflow==2.10.0 --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.0/constraints-3.9.txt" 
+RUN pip3 install apache-airflow-providers-apache-spark 
+RUN pip3 install apache-airflow 
+
+# 赋予权限 
+RUN chmod -R 777 . 
+RUN rm -rf /usr/local/lib/python3.9/site-packages/airflow/example_dags/* 
+
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["notebook"]
