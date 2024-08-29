@@ -31,6 +31,7 @@ RUN apt-get update && \
 
 # Install Jupyter and other python deps
 COPY requirements.txt .
+RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
 # Add scala kernel via spylon-kernel
